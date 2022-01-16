@@ -1,16 +1,14 @@
-const CACHE_NAME = "static-cache-v2";
-const DATA_CACHE_NAME = 'data-cache-v1';
-
 const FILES_TO_CACHE = [
-    "/",
     "./index.html",
-    "/styles.css",
-    "/icons/icon-192x192.png",
-    "/icons/icon-512x512.png",
+    "./css/styles.css",
     "../manifest.json",
-    "/idb.js",
-    "/index.js",
+    "./js/idb.js",
+    "./js/index.js",
 ]
+
+const APP_PREFIX = 'Budget-Tracker-';
+const VERSION = 'version_01';
+const CACHE_NAME = APP_PREFIX + VERSION;
 
 self.addEventListener('install', function (e) {
     e.waitUntil(
@@ -19,23 +17,7 @@ self.addEventListener('install', function (e) {
           return cache.addAll(FILES_TO_CACHE)
         })
     );
-    self.skipWaiting();
 });
-
-self.addEventListener('fetch', function (e) {
-    console.log('fetch request : ' + e.request.url)
-    e.respondWith(
-        caches.match(e.request).then(function (request) {
-            if (request) {
-              console.log('responding with cache : ' + e.request.url)
-              return request
-            } else {
-                console.log('file is not cached, fetching : ' + e.request.url)
-                return fetch(e.request)
-            }            
-        })
-    )
-})
 
 self.addEventListener('activate', function (e) {
     e.waitUntil(
@@ -56,3 +38,19 @@ self.addEventListener('activate', function (e) {
       })
     );
 });
+
+self.addEventListener('fetch', function (e) {
+    console.log('fetch request : ' + e.request.url)
+    e.respondWith(
+        caches.open(CACHE_NAME)
+            .then(cache => caches.match(e.request).then(function (request) {
+                if (request) {
+                console.log('responding with cache : ' + e.request.url)
+                return request
+                } else {
+                    console.log('file is not cached, fetching : ' + e.request.url)
+                    return fetch(e.request)
+                }            
+        }))
+    )
+})
