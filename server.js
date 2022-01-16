@@ -5,6 +5,7 @@ const compression = require("compression");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/budgetdb";
 
 const app = express();
 
@@ -17,10 +18,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 mongoose.connect(
-  process.env.MONGODB_URI || 'mongodb://localhost/budgetdb' , {
+  MONGODB_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
+  //useUnifiedTopology: true,
+  //useCreateIndex: true,
   useFindAndModify: false
 });
 
