@@ -8,7 +8,7 @@ This application lets a user add and subtract funds to keep track of budgets, th
 
 This is what the application looks like in action:
 
-![screenshot](./public/img/capture2.PNG)
+![screenshot](./public/img/Capture2.PNG)
 
 ## **Deployed App**
 
